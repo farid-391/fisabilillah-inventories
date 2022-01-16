@@ -29,7 +29,7 @@ session_start();
 
 if($_SESSION["loggedIn"] != true){
     //echo 'not logged in';
-    header("Location: ../auth/login.php");
+    header('location:../../auth/login.php?returnmessage=not_loggedin');
     exit;
 }
 

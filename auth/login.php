@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Login</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,6 +19,13 @@
 
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .zindex-modal{
+            position: absolute;
+            top:10px;
+            z-index: 1055;
+        }
+    </style>
 
 </head>
 <?php
@@ -33,23 +40,43 @@ else
    $returnMessage="";
 }
 $message="";
+if ($returnMessage=="wrong_captcha")
+{
+    $message="<div class='alert alert-warning alert-dismissible fade show mr-4 ml-4 row d-flex justify-content-between mb-4 zindex-modal' role='alert'>
+    <div class='col-10'><strong>Sorry!</strong> Wrong Captcha.</div>
+    <div class='col-1'><i class='fas fa-times pl-3' data-dismiss='alert' aria-label='Close'></i></div></div>";
+}
 if ($returnMessage=="wrong_credentials")
 {
-   $message="<div class='alert alert-danger alert-dismissible fade show mr-2 ml-2 row d-sm-flex align-items-center justify-content-between mb-4' role='alert'>
-   <div class='col-11'><strong>Maaf, </strong>Email atau Password Anda Salah!</div>
-   <div class='col-1'><i class='fas fa-times' data-dismiss='alert' aria-label='Close'></i></div></div>";
+    $message="<div class='alert alert-danger alert-dismissible fade show mr-4 ml-4 row d-flex justify-content-between mb-4 zindex-modal' role='alert'>
+    <div class='col-11'><strong>Sorry!</strong> Wrong Email or Password.</div>
+    <div class='col-1'><i class='fas fa-times pl-3' data-dismiss='alert' aria-label='Close'></i></div></div>";
+}
+if ($returnMessage=="not_loggedin")
+{
+    $message="<div class='alert alert-warning alert-dismissible fade show mr-4 ml-4 row d-flex justify-content-between mb-4 zindex-modal' role='alert'>
+    <div class='col-10'><strong>Sorry!</strong> Please Login First.</div>
+    <div class='col-1'><i class='fas fa-times pl-3' data-dismiss='alert' aria-label='Close'></i></div></div>";
+}
+if ($returnMessage=="login_success")
+{
+    $message="<div class='alert alert-success alert-dismissible fade show mr-4 ml-4 row d-flex justify-content-between mb-4 zindex-modal' role='alert'>
+    <div class='col-10'><strong>Yeay!</strong> Login Succes.</div>
+    <div class='col-1'><i class='fas fa-times pl-3' data-dismiss='alert' aria-label='Close'></i></div></div>";
+    header( 'refresh:0.8;url=../admin/index.php' );
 }
 if ($returnMessage=="logout_success")
 {
-   $message="<div class='alert alert-success alert-dismissible fade show mr-2 ml-2 row' role='alert'>
-   <div class='col-11'><strong>Yeay, </strong>Anda Berhasil Logout!</div>
-   <div class='col-1 end-50'><i class='fas fa-times' data-dismiss='alert' aria-label='Close'></i></div>";
+    $message="<div class='alert alert-success alert-dismissible fade show mr-4 ml-4 row d-flex justify-content-between mb-4 zindex-modal' role='alert'>
+    <div class='col-10'><strong>Yeay!</strong> Logout Succes.</div>
+    <div class='col-1'><i class='fas fa-times pl-3' data-dismiss='alert' aria-label='Close'></i></div></div>";
 }
 ?>
-<body class="bg-gradient-primary">
+<body class="bg-gradient-secondary">
     <div class="container">
         <!-- Outer Row -->
         <div class="row justify-content-center">
+        <?php echo $message; ?>
             <div class="col-xl-5 col-lg-8 col-md-9">
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
@@ -63,25 +90,29 @@ if ($returnMessage=="logout_success")
                                     </div>
                                     <form class="user" method="post" action="login_check.php">
                                         <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
+                                        <input type="email" class="form-control"
                                                 id="inputEmailAddress" name="inputEmailAddress" aria-describedby="emailHelp"
                                                 placeholder="Enter Email Address..." required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="inputPassword" name="inputPassword" placeholder="Password..." required>
+                                            <input type="password" class="form-control"
+                                                id="inputPassword" name="inputPassword" placeholder="Enter Password..." required>
                                         </div>
                                         <div class="form-group">
+                                            <img src="captcha.php" alt="">
+                                            <input type="" class="form-control"
+                                                id="inputCaptcha" name="inputCaptcha" placeholder="Enter Captcha..." required>                                
+                                        </div>
+                                        <!-- <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
                                                 <label class="custom-control-label" for="customCheck">Remember
                                                     Me</label>
                                             </div>
-                                        </div>
-                                        <input type="submit" value="Login" class="btn btn-primary btn-user btn-block">
+                                        </div> -->
+                                        <input type="submit" value="Login" class="btn btn-primary btn-block">
                                     </form>                                                     
-                                </div>
-                                <?php echo $message; ?>                                    
+                                </div>                                    
                             </div>
                         </div>
                     </div>
